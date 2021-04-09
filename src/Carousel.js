@@ -237,8 +237,7 @@ export default {
       if (this.defaults.rtl === null) {
         this.defaults.rtl = getComputedStyle(this.$el).direction === 'rtl';
       }
-
-      if (this.$props.autoPlay) {
+      if (this.config.autoPlay) {
         this.initAutoPlay();
       }
       if (this.config.mouseDrag) {
@@ -265,7 +264,7 @@ export default {
           this.isDragging ||
           (this.isHover && this.config.hoverPause) ||
           this.isFocus ||
-          !this.$props.autoPlay
+          !this.config.autoPlay
         ) {
           this.timer.set(this.playSpeed);
           return;
@@ -335,14 +334,14 @@ export default {
     },
     restartTimer() {
       this.$nextTick(() => {
-        if (this.timer === null && this.$props.autoPlay) {
+        if (this.timer === null && this.config.autoPlay) {
           this.initAutoPlay();
           return;
         }
 
         if (this.timer) {
           this.timer.stop();
-          if (this.$props.autoPlay) {
+          if (this.config.autoPlay) {
             this.timer.set(this.playSpeed);
             this.timer.start();
           }
