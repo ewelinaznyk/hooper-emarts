@@ -8,8 +8,8 @@ const version = process.env.VERSION || require('../package.json').version;
 const paths = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
-  outputFolder: path.join(__dirname, '../dist'),
-}
+  outputFolder: path.join(__dirname, '../dist')
+};
 
 const common = {
   name: 'hooper',
@@ -19,19 +19,13 @@ const common = {
     compress: true,
     mangle: true
   },
-  banner:
-    `/**
-  * Hopper ${version}
+  banner: `/**
+  * Hopper-emarts ${version}
   * (c) ${new Date().getFullYear()}
     * @license MIT
     */`,
-  plugins: [
-    css({ output: 'dist/hooper.css' }),
-    commonjs(),
-    vue({ css: false }),
-    babel({ extensions: ['.js', '.vue'] })
-  ]
-}
+  plugins: [css({ output: 'dist/hooper.css' }), commonjs(), vue({ css: false }), babel({ extensions: ['.js', '.vue'] })]
+};
 const builds = {
   umd: {
     format: 'umd',
@@ -43,9 +37,9 @@ const builds = {
     format: 'es',
     ext: '.esm'
   }
-}
+};
 
-function getConfig (key) {
+function getConfig(key) {
   const build = builds[key];
   const config = {
     ...build,
@@ -63,14 +57,14 @@ function getConfig (key) {
         vue: 'Vue'
       }
     }
-  }
+  };
   return config;
 }
 
 const configs = Object.keys(builds).reduce((acc, build) => {
   acc[build] = getConfig(build);
   return acc;
-}, {})
+}, {});
 
 module.exports = {
   paths,

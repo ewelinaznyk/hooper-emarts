@@ -12,7 +12,6 @@ build('umd');
 build('esm');
 
 async function build(build) {
-  console.log(paths.dist);
   await mkdirpNode(paths.dist);
   const config = configs[build];
   console.log(chalk.cyan(`Generating ${build} build...`));
