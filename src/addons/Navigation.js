@@ -1,22 +1,22 @@
 import Icon from './Icon';
 import '../styles/navigation.css';
 
-function iconName(isVertical, isRTL, isPrev) {
+function iconName(isRTL, isPrev) {
   if (isPrev) {
-    return isVertical ? 'arrowUp' : isRTL ? 'arrowRight' : 'arrowLeft';
+    return isRTL ? 'arrowRight' : 'arrowLeft';
   }
 
-  return isVertical ? 'arrowDown' : isRTL ? 'arrowLeft' : 'arrowRight';
+  return isRTL ? 'arrowLeft' : 'arrowRight';
 }
 
-function renderButton(h, disabled, slot, isPrev, { isVertical, isRTL }, onClick) {
+function renderButton(h, disabled, slot, isPrev, { isRTL }, onClick) {
   const children =
     slot && slot.length
       ? slot
       : [
           h(Icon, {
             props: {
-              name: iconName(isVertical, isRTL, isPrev)
+              name: iconName(isRTL, isPrev)
             }
           })
         ];
@@ -76,8 +76,7 @@ export default {
   },
   render(h) {
     const config = {
-      isRTL: this.$hooper.config.rtl,
-      isVertical: this.$hooper.config.vertical
+      isRTL: this.$hooper.config.rtl
     };
 
     const children = [
@@ -90,7 +89,6 @@ export default {
       {
         class: {
           'hooper-navigation': true,
-          'is-vertical': this.$hooper.config.vertical,
           'is-rtl': this.$hooper.config.rtl
         }
       },

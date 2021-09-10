@@ -19,18 +19,6 @@
 .hooper-prev {
   left: 0;
 }
-.hooper-navigation.is-vertical .hooper-next {
-  top: auto;
-  bottom: 0;
-  transform: initial;
-}
-.hooper-navigation.is-vertical .hooper-prev {
-  top: 0;
-  bottom: auto;
-  right: 0;
-  left: auto;
-  transform: initial;
-}
 .hooper-navigation.is-rtl .hooper-prev {
   left: auto;
   right: 0;

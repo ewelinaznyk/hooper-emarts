@@ -20,10 +20,6 @@
   padding: 0;
   margin: 0;
 }
-.hooper.is-vertical .hooper-track {
-  flex-direction: column;
-  height: 200px;
-}
 
 .hooper.is-rtl {
   direction: rtl;
