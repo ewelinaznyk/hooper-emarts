@@ -21,10 +21,6 @@
   margin: 0;
 }
 
-.hooper.is-rtl {
-  direction: rtl;
-}
-
 .hooper-sr-only {
   position: absolute;
   width: 1px;
