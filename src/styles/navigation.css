@@ -19,11 +19,3 @@
 .hooper-prev {
   left: 0;
 }
-.hooper-navigation.is-rtl .hooper-prev {
-  left: auto;
-  right: 0;
-}
-.hooper-navigation.is-rtl .hooper-next {
-  right: auto;
-  left: 0;
-}
