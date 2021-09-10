@@ -93,11 +93,11 @@ export default {
         return {};
       },
       type: Object
-    },
-    group: {
-      type: String,
-      default: null
     }
+    // group: {
+    //   type: String,
+    //   default: null
+    // }
   },
   data() {
     return {
@@ -156,14 +156,6 @@ export default {
     }
   },
   watch: {
-    group(val, oldVal) {
-      if (val === oldVal) {
-        return;
-      }
-
-      EMITTER.$off(`slideGroup:${oldVal}`, this._groupSlideHandler);
-      this.addGroupListeners();
-    },
     autoPlay(val, oldVal) {
       if (val === oldVal) {
         return;
@@ -173,7 +165,7 @@ export default {
   },
   methods: {
     // controlling methods
-    slideTo(slideIndex, isSource = true) {
+    slideTo(slideIndex) {
       if (this.isSliding || slideIndex === this.currentSlide) {
         return;
       }
@@ -188,11 +180,6 @@ export default {
       const index = infiniteScroll
         ? slideIndex
         : getInRange(slideIndex, this.trimStart, this.slidesCount - this.trimEnd);
-
-      // Notify others if in a group and is the slide event initiator.
-      if (this.group && isSource) {
-        EMITTER.$emit(`slideGroup:${this.group}`, slideIndex);
-      }
 
       this.currentSlide = index;
       this.isSliding = true;
@@ -352,10 +339,6 @@ export default {
       this.endPosition.y = this.isTouch ? event.touches[0].clientY : event.clientY;
       const deltaX = this.endPosition.x - this.startPosition.x;
       const deltaY = this.endPosition.y - this.startPosition.y;
-      // Maybe scrolling.
-      // if (this.isInvalidDirection(deltaX, deltaY)) {
-      //   return;
-      // }
 
       this.delta.y = deltaY;
       this.delta.x = deltaX;
@@ -411,17 +394,6 @@ export default {
       if (delta === 1) {
         this.slidePrev();
       }
-    },
-    addGroupListeners() {
-      if (!this.group) {
-        return;
-      }
-
-      this._groupSlideHandler = slideIndex => {
-        // set the isSource to false to prevent infinite emitting loop.
-        this.slideTo(slideIndex, false);
-      };
-      EMITTER.$on(`slideGroup:${this.group}`, this._groupSlideHandler);
     }
   },
   created() {
@@ -429,7 +401,6 @@ export default {
   },
   mounted() {
     this.initEvents();
-    this.addGroupListeners();
     this.$nextTick(() => {
       this.update();
       this.slideTo(this.config.initialSlide || 0);
@@ -441,9 +412,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.update);
-    if (this.group) {
-      EMITTER.$off(`slideGroup:${this.group}`, this._groupSlideHandler);
-    }
 
     if (this.timer) {
       this.timer.stop();
