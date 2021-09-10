@@ -1,5 +1,31 @@
 # Examples
 
+## Hooper Test
+
+<hooper :autoPlay="true" :playSpeed="5000" :itemsToShow="3" :infiniteScroll="true" :mouseDrag="false" :wheelControl="false" :centerMode="true" :hoverPause="false">
+  <slide>
+    slide 1
+  </slide>
+  <slide>
+    slide 2
+  </slide>
+  <slide>
+    slide 3
+  </slide>
+  <slide>
+    slide 4
+  </slide>
+  <slide>
+    slide 5
+  </slide>
+  <slide>
+    slide 6
+  </slide>
+  <hooper-pagination slot="hooper-addons"></hooper-pagination>
+  <hooper-navigation slot="hooper-addons"></hooper-navigation>
+</hooper>
+
+
 ## Default Example
 
 <hooper>
