@@ -26,15 +26,3 @@
   background-color: #fff;
   cursor: pointer;
 }
-.hooper-pagination.is-vertical {
-  bottom: auto;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.hooper-pagination.is-vertical .hooper-indicators {
-  flex-direction: column;
-}
-.hooper-pagination.is-vertical .hooper-indicator {
-  width: 6px;
-}

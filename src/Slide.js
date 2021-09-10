@@ -16,10 +16,7 @@ export default {
   },
   computed: {
     style() {
-      const { config, slideHeight, slideWidth } = this.$hooper || {};
-      if (config.vertical) {
-        return `height: ${slideHeight}px`;
-      }
+      const { slideWidth } = this.$hooper || {};
 
       return `width: ${slideWidth}px`;
     },
