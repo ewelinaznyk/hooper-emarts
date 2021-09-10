@@ -37,11 +37,6 @@ export default {
       default: false,
       type: Boolean
     },
-    // enable rtl mode
-    rtl: {
-      default: null,
-      type: Boolean
-    },
     // enable auto sliding to carousel
     autoPlay: {
       default: false,
@@ -142,14 +137,13 @@ export default {
       };
     },
     trackTransform() {
-      const { infiniteScroll, rtl, centerMode } = this.config;
+      const { infiniteScroll, centerMode } = this.config;
 
-      const direction = rtl ? -1 : 1;
       const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
       const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
 
       // calculate track translate
-      const translate = this.delta.x + direction * (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
+      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
       return `transform: translate(${translate}px, 0);`;
     },
@@ -221,10 +215,6 @@ export default {
     },
 
     initEvents() {
-      // get the element direction if not explicitly set
-      if (this.defaults.rtl === null) {
-        this.defaults.rtl = getComputedStyle(this.$el).direction === 'rtl';
-      }
       if (this.config.autoPlay) {
         this.initAutoPlay();
       }
@@ -378,7 +368,7 @@ export default {
       const tolerance = this.config.shortDrag ? 0.5 : 0.15;
       this.isDragging = false;
 
-      const direction = (this.config.rtl ? -1 : 1) * sign(this.delta.x);
+      const direction = sign(this.delta.x);
       const draggedSlides = Math.round(Math.abs(this.delta.x / this.slideWidth) + tolerance);
       this.slideTo(this.currentSlide - direction * draggedSlides);
 
@@ -398,15 +388,6 @@ export default {
       const key = event.key;
       if (key.startsWith('Arrow')) {
         event.preventDefault();
-      }
-      if (this.config.rtl) {
-        if (key === 'ArrowRight') {
-          this.slidePrev();
-        }
-        if (key === 'ArrowLeft') {
-          this.slideNext();
-        }
-        return;
       }
       if (key === 'ArrowRight') {
         this.slideNext();
@@ -475,8 +456,7 @@ export default {
       'section',
       {
         class: {
-          hooper: true,
-          'is-rtl': this.config.rtl
+          hooper: true
         },
         attrs: {
           tabindex: '0'
