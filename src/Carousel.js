@@ -37,11 +37,6 @@ export default {
       default: false,
       type: Boolean
     },
-    // vertical sliding mode
-    vertical: {
-      default: false,
-      type: Boolean
-    },
     // enable rtl mode
     rtl: {
       default: null,
@@ -147,21 +142,14 @@ export default {
       };
     },
     trackTransform() {
-      const { infiniteScroll, vertical, rtl, centerMode } = this.config;
+      const { infiniteScroll, rtl, centerMode } = this.config;
 
       const direction = rtl ? -1 : 1;
-      const slideLength = vertical ? this.slideHeight : this.slideWidth;
-      const containerLength = vertical ? this.containerHeight : this.containerWidth;
-      const dragDelta = vertical ? this.delta.y : this.delta.x;
-      const clonesSpace = infiniteScroll ? slideLength * this.slidesCount : 0;
-      const centeringSpace = centerMode ? (containerLength - slideLength) / 2 : 0;
+      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
+      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
 
       // calculate track translate
-      const translate = dragDelta + direction * (centeringSpace - clonesSpace - this.currentSlide * slideLength);
-
-      if (vertical) {
-        return `transform: translate(0, ${translate}px);`;
-      }
+      const translate = this.delta.x + direction * (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
       return `transform: translate(${translate}px, 0);`;
     },
@@ -312,10 +300,6 @@ export default {
       const rect = this.$el.getBoundingClientRect();
       this.containerWidth = rect.width;
       this.containerHeight = rect.height;
-      if (this.config.vertical) {
-        this.slideHeight = this.containerHeight / this.config.itemsToShow;
-        return;
-      }
       this.slideWidth = this.containerWidth / this.config.itemsToShow;
     },
     updateConfig() {
@@ -369,17 +353,6 @@ export default {
       document.addEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
       document.addEventListener(this.isTouch ? 'touchend' : 'mouseup', this.onDragEnd);
     },
-    isInvalidDirection(deltaX, deltaY) {
-      if (!this.config.vertical) {
-        return Math.abs(deltaX) <= Math.abs(deltaY);
-      }
-
-      if (this.config.vertical) {
-        return Math.abs(deltaY) <= Math.abs(deltaX);
-      }
-
-      return false;
-    },
     onDrag(event) {
       if (this.isSliding) {
         return;
@@ -390,9 +363,9 @@ export default {
       const deltaX = this.endPosition.x - this.startPosition.x;
       const deltaY = this.endPosition.y - this.startPosition.y;
       // Maybe scrolling.
-      if (this.isInvalidDirection(deltaX, deltaY)) {
-        return;
-      }
+      // if (this.isInvalidDirection(deltaX, deltaY)) {
+      //   return;
+      // }
 
       this.delta.y = deltaY;
       this.delta.x = deltaX;
@@ -405,15 +378,10 @@ export default {
       const tolerance = this.config.shortDrag ? 0.5 : 0.15;
       this.isDragging = false;
 
-      if (this.config.vertical) {
-        const draggedSlides = Math.round(Math.abs(this.delta.y / this.slideHeight) + tolerance);
-        this.slideTo(this.currentSlide - sign(this.delta.y) * draggedSlides);
-      }
-      if (!this.config.vertical) {
-        const direction = (this.config.rtl ? -1 : 1) * sign(this.delta.x);
-        const draggedSlides = Math.round(Math.abs(this.delta.x / this.slideWidth) + tolerance);
-        this.slideTo(this.currentSlide - direction * draggedSlides);
-      }
+      const direction = (this.config.rtl ? -1 : 1) * sign(this.delta.x);
+      const draggedSlides = Math.round(Math.abs(this.delta.x / this.slideWidth) + tolerance);
+      this.slideTo(this.currentSlide - direction * draggedSlides);
+
       this.delta.x = 0;
       this.delta.y = 0;
       document.removeEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
@@ -430,15 +398,6 @@ export default {
       const key = event.key;
       if (key.startsWith('Arrow')) {
         event.preventDefault();
-      }
-      if (this.config.vertical) {
-        if (key === 'ArrowUp') {
-          this.slidePrev();
-        }
-        if (key === 'ArrowDown') {
-          this.slideNext();
-        }
-        return;
       }
       if (this.config.rtl) {
         if (key === 'ArrowRight') {
@@ -517,7 +476,6 @@ export default {
       {
         class: {
           hooper: true,
-          'is-vertical': this.config.vertical,
           'is-rtl': this.config.rtl
         },
         attrs: {
