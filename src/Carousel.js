@@ -94,10 +94,6 @@ export default {
       },
       type: Object
     }
-    // group: {
-    //   type: String,
-    //   default: null
-    // }
   },
   data() {
     return {
