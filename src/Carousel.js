@@ -37,16 +37,6 @@ export default {
       default: false,
       type: Boolean
     },
-    // vertical sliding mode
-    vertical: {
-      default: false,
-      type: Boolean
-    },
-    // enable rtl mode
-    rtl: {
-      default: null,
-      type: Boolean
-    },
     // enable auto sliding to carousel
     autoPlay: {
       default: false,
@@ -103,10 +93,6 @@ export default {
         return {};
       },
       type: Object
-    },
-    group: {
-      type: String,
-      default: null
     }
   },
   data() {
@@ -147,21 +133,13 @@ export default {
       };
     },
     trackTransform() {
-      const { infiniteScroll, vertical, rtl, centerMode } = this.config;
+      const { infiniteScroll, centerMode } = this.config;
 
-      const direction = rtl ? -1 : 1;
-      const slideLength = vertical ? this.slideHeight : this.slideWidth;
-      const containerLength = vertical ? this.containerHeight : this.containerWidth;
-      const dragDelta = vertical ? this.delta.y : this.delta.x;
-      const clonesSpace = infiniteScroll ? slideLength * this.slidesCount : 0;
-      const centeringSpace = centerMode ? (containerLength - slideLength) / 2 : 0;
+      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
+      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
 
       // calculate track translate
-      const translate = dragDelta + direction * (centeringSpace - clonesSpace - this.currentSlide * slideLength);
-
-      if (vertical) {
-        return `transform: translate(0, ${translate}px);`;
-      }
+      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
       return `transform: translate(${translate}px, 0);`;
     },
@@ -174,14 +152,6 @@ export default {
     }
   },
   watch: {
-    group(val, oldVal) {
-      if (val === oldVal) {
-        return;
-      }
-
-      EMITTER.$off(`slideGroup:${oldVal}`, this._groupSlideHandler);
-      this.addGroupListeners();
-    },
     autoPlay(val, oldVal) {
       if (val === oldVal) {
         return;
@@ -191,7 +161,7 @@ export default {
   },
   methods: {
     // controlling methods
-    slideTo(slideIndex, isSource = true) {
+    slideTo(slideIndex) {
       if (this.isSliding || slideIndex === this.currentSlide) {
         return;
       }
@@ -206,11 +176,6 @@ export default {
       const index = infiniteScroll
         ? slideIndex
         : getInRange(slideIndex, this.trimStart, this.slidesCount - this.trimEnd);
-
-      // Notify others if in a group and is the slide event initiator.
-      if (this.group && isSource) {
-        EMITTER.$emit(`slideGroup:${this.group}`, slideIndex);
-      }
 
       this.currentSlide = index;
       this.isSliding = true;
@@ -233,10 +198,6 @@ export default {
     },
 
     initEvents() {
-      // get the element direction if not explicitly set
-      if (this.defaults.rtl === null) {
-        this.defaults.rtl = getComputedStyle(this.$el).direction === 'rtl';
-      }
       if (this.config.autoPlay) {
         this.initAutoPlay();
       }
@@ -312,10 +273,6 @@ export default {
       const rect = this.$el.getBoundingClientRect();
       this.containerWidth = rect.width;
       this.containerHeight = rect.height;
-      if (this.config.vertical) {
-        this.slideHeight = this.containerHeight / this.config.itemsToShow;
-        return;
-      }
       this.slideWidth = this.containerWidth / this.config.itemsToShow;
     },
     updateConfig() {
@@ -369,17 +326,6 @@ export default {
       document.addEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
       document.addEventListener(this.isTouch ? 'touchend' : 'mouseup', this.onDragEnd);
     },
-    isInvalidDirection(deltaX, deltaY) {
-      if (!this.config.vertical) {
-        return Math.abs(deltaX) <= Math.abs(deltaY);
-      }
-
-      if (this.config.vertical) {
-        return Math.abs(deltaY) <= Math.abs(deltaX);
-      }
-
-      return false;
-    },
     onDrag(event) {
       if (this.isSliding) {
         return;
@@ -389,10 +335,6 @@ export default {
       this.endPosition.y = this.isTouch ? event.touches[0].clientY : event.clientY;
       const deltaX = this.endPosition.x - this.startPosition.x;
       const deltaY = this.endPosition.y - this.startPosition.y;
-      // Maybe scrolling.
-      if (this.isInvalidDirection(deltaX, deltaY)) {
-        return;
-      }
 
       this.delta.y = deltaY;
       this.delta.x = deltaX;
@@ -405,15 +347,10 @@ export default {
       const tolerance = this.config.shortDrag ? 0.5 : 0.15;
       this.isDragging = false;
 
-      if (this.config.vertical) {
-        const draggedSlides = Math.round(Math.abs(this.delta.y / this.slideHeight) + tolerance);
-        this.slideTo(this.currentSlide - sign(this.delta.y) * draggedSlides);
-      }
-      if (!this.config.vertical) {
-        const direction = (this.config.rtl ? -1 : 1) * sign(this.delta.x);
-        const draggedSlides = Math.round(Math.abs(this.delta.x / this.slideWidth) + tolerance);
-        this.slideTo(this.currentSlide - direction * draggedSlides);
-      }
+      const direction = sign(this.delta.x);
+      const draggedSlides = Math.round(Math.abs(this.delta.x / this.slideWidth) + tolerance);
+      this.slideTo(this.currentSlide - direction * draggedSlides);
+
       this.delta.x = 0;
       this.delta.y = 0;
       document.removeEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
@@ -430,24 +367,6 @@ export default {
       const key = event.key;
       if (key.startsWith('Arrow')) {
         event.preventDefault();
-      }
-      if (this.config.vertical) {
-        if (key === 'ArrowUp') {
-          this.slidePrev();
-        }
-        if (key === 'ArrowDown') {
-          this.slideNext();
-        }
-        return;
-      }
-      if (this.config.rtl) {
-        if (key === 'ArrowRight') {
-          this.slidePrev();
-        }
-        if (key === 'ArrowLeft') {
-          this.slideNext();
-        }
-        return;
       }
       if (key === 'ArrowRight') {
         this.slideNext();
@@ -471,17 +390,6 @@ export default {
       if (delta === 1) {
         this.slidePrev();
       }
-    },
-    addGroupListeners() {
-      if (!this.group) {
-        return;
-      }
-
-      this._groupSlideHandler = slideIndex => {
-        // set the isSource to false to prevent infinite emitting loop.
-        this.slideTo(slideIndex, false);
-      };
-      EMITTER.$on(`slideGroup:${this.group}`, this._groupSlideHandler);
     }
   },
   created() {
@@ -489,7 +397,6 @@ export default {
   },
   mounted() {
     this.initEvents();
-    this.addGroupListeners();
     this.$nextTick(() => {
       this.update();
       this.slideTo(this.config.initialSlide || 0);
@@ -501,9 +408,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.update);
-    if (this.group) {
-      EMITTER.$off(`slideGroup:${this.group}`, this._groupSlideHandler);
-    }
 
     if (this.timer) {
       this.timer.stop();
@@ -516,9 +420,7 @@ export default {
       'section',
       {
         class: {
-          hooper: true,
-          'is-vertical': this.config.vertical,
-          'is-rtl': this.config.rtl
+          hooper: true
         },
         attrs: {
           tabindex: '0'

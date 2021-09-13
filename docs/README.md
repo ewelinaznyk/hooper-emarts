@@ -32,10 +32,10 @@ meta:
 First step is to install it using `yarn` or `npm`:
 
 ```bash
-npm install hooper
+npm install hooper-emarts
 
 # or use yarn
-yarn add hooper
+yarn add hooper-emarts
 ```
 
 ### Use Hooper
@@ -54,7 +54,7 @@ yarn add hooper
 <template>
 
 <script>
-  import { Hooper, Slide } from 'hooper';
+  import { Hooper, Slide } from 'hooper-emarts';
 
   export default {
     name: 'App',

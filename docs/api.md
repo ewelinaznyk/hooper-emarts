@@ -10,8 +10,6 @@
 |`initialSlide`   |0    |index number of initial slide.|
 |`infiniteScroll` |false|enable infinite scrolling mode.|
 |`centerMode`     |false|enable center mode.|
-|`vertical`       |false|enable vertical sliding mode.|
-|`rtl`            |null |enable rtl mode.|
 |`mouseDrag`      |true |toggle mouse dragging.|
 |`touchDrag`      |true |toggle touch dragging.|
 |`wheelControl`   |true |toggle mouse wheel sliding.|
@@ -20,7 +18,6 @@
 |`autoPlay`       |false|enable auto sliding to carousel. This could be changed dynamically.|
 |`playSpeed`      |2000 |speed of auto play to trigger slide in ms.|
 |`transition`     |300  |sliding transition time in ms.|
-|`group`          |null   | Carousels with the same group name will slide together to the same index if possible.|
 |`hoverPause`     |true |pause autoPlay if the mouse enters the slide.|
 |`trimWhiteSpace` |false|limit carousel to slide only when there will be no completely empty slide-space.|
 |`settings`       |{ }  |an object to pass all settings.|
@@ -60,7 +57,6 @@ Hooper accept two different slots, default slots for slides items, `addons` slot
 <hooper>
   ...
   <hooper-navigation slot="hooper-addons"></hooper-navigation>
-  <hooper-progress slot="hooper-addons"></hooper-progress>
   <hooper-pagination slot="hooper-addons"></hooper-pagination>
 </hooper>
 ```

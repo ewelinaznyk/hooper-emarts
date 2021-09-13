@@ -1,22 +1,14 @@
 import Icon from './Icon';
 import '../styles/navigation.css';
 
-function iconName(isVertical, isRTL, isPrev) {
-  if (isPrev) {
-    return isVertical ? 'arrowUp' : isRTL ? 'arrowRight' : 'arrowLeft';
-  }
-
-  return isVertical ? 'arrowDown' : isRTL ? 'arrowLeft' : 'arrowRight';
-}
-
-function renderButton(h, disabled, slot, isPrev, { isVertical, isRTL }, onClick) {
+function renderButton(h, disabled, slot, isPrev, onClick) {
   const children =
     slot && slot.length
       ? slot
       : [
           h(Icon, {
             props: {
-              name: iconName(isVertical, isRTL, isPrev)
+              name: isPrev ? 'arrowLeft' : 'arrowRight'
             }
           })
         ];
@@ -75,23 +67,16 @@ export default {
     }
   },
   render(h) {
-    const config = {
-      isRTL: this.$hooper.config.rtl,
-      isVertical: this.$hooper.config.vertical
-    };
-
     const children = [
-      renderButton(h, this.isPrevDisabled, this.$slots['hooper-prev'], true, config, () => this.slidePrev()),
-      renderButton(h, this.isNextDisabled, this.$slots['hooper-next'], false, config, () => this.slideNext())
+      renderButton(h, this.isPrevDisabled, this.$slots['hooper-prev'], true, () => this.slidePrev()),
+      renderButton(h, this.isNextDisabled, this.$slots['hooper-next'], false, () => this.slideNext())
     ];
 
     return h(
       'div',
       {
         class: {
-          'hooper-navigation': true,
-          'is-vertical': this.$hooper.config.vertical,
-          'is-rtl': this.$hooper.config.rtl
+          'hooper-navigation': true
         }
       },
       children
