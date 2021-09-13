@@ -5,10 +5,10 @@
 First step is to install it using `yarn` or `npm`:
 
 ```bash
-npm install hooper
+npm install hooper-emarts
 
 # or use yarn
-yarn add hooper
+yarn add hooper-emarts
 ```
 
 ## Use Hooper
@@ -27,7 +27,7 @@ yarn add hooper
 </template>
 
 <script>
-import { Hooper, Slide } from 'hooper';
+import { Hooper, Slide } from 'hooper-emarts';
 import 'hooper-emarts/dist/hooper.css';
 
 export default {
@@ -77,7 +77,7 @@ you can combine all settings in one object and pass it using `setting` prop
 </template>
 
 <script>
-import { Hooper, Slide } from 'hooper';
+import { Hooper, Slide } from 'hooper-emarts';
 
 export default {
   name: 'App',
@@ -131,7 +131,7 @@ you can pass an array of breaking points to the carousel settings, to specify a 
 </template>
 
 <script>
-import { Hooper, Slide } from 'hooper';
+import { Hooper, Slide } from 'hooper-emarts';
 
 export default {
   name: 'App',
@@ -161,51 +161,6 @@ export default {
 </script>
 ```
 
-## RTL
-
-by default the carousel will automatically display according to the current document direction, unless you have explicitly set the direction throw the `rtl` prop
-
-```vue {1}
-<hooper :rtl="true">
-  <slide>
-    slide 1
-  </slide>
-  <slide>
-    slide 2
-  </slide>
-  ...
-
-</hooper>
-```
-
-## Carousel Groups
-
-you can group multiple carousels to slide together, sliding can be initiated from any carousel in the group, all carousels will try to slide to the same index as the carousel that initiated the sliding event.
-
-```vue
-<hooper group="group1">
-  <slide>
-    slide 1
-  </slide>
-  <slide>
-    slide 2
-  </slide>
-</hooper>
-
-<hooper group="group1">
-  <slide>
-    slide 1
-  </slide>
-  <slide>
-    slide 2
-  </slide>
-</hooper>
-```
-
-::: tip Note!
-Grouped carousels nested inside other components will still be synced, so be careful to give deterministic group names to your carousels. You can use `v-bind` to assign a dynamic carousel group as well.
-:::
-
 ## Addons
 
 Hooper shipped with addons component, that add extra features to carousel
@@ -214,7 +169,6 @@ Available Addons:
 
 - Navigation
 - Pagination
-- Progress
 
 ### Work with Addons
 
@@ -231,7 +185,6 @@ Available Addons:
 
     <hooper-navigation slot="hooper-addons"></hooper-navigation>
     <hooper-pagination slot="hooper-addons"></hooper-pagination>
-    <hooper-progress slot="hooper-addons"></hooper-progress>
   </hooper>
 </template>
 
@@ -239,7 +192,6 @@ Available Addons:
 import {
   Hooper,
   Slide,
-  Progress as HooperProgress,
   Pagination as HooperPagination,
   Navigation as HooperNavigation
 } from 'hooper';
@@ -249,7 +201,6 @@ export default {
   components: {
     Hooper,
     Slide,
-    HooperProgress,
     HooperPagination,
     HooperNavigation
   },
