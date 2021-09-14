@@ -47,6 +47,32 @@
 </hooper>
 ```
 
+## Navigation Component Autoplay
+
+<hooper :autoPlay="true" :playSpeed="5000" :itemsToShow="3" :infiniteScroll="true">
+  <slide>
+    slide 1
+  </slide>
+  <slide>
+    slide 2
+  </slide>
+  <slide>
+    slide 3
+  </slide>
+  <slide>
+    slide 4
+  </slide>
+  <slide>
+    slide 5
+  </slide>
+  <slide>
+    slide 6
+  </slide>
+
+  <hooper-navigation slot="hooper-addons"></hooper-navigation>
+</hooper>
+
+
 ## Navigation Component
 
 <hooper>

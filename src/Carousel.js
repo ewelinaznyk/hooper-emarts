@@ -162,7 +162,9 @@ export default {
   methods: {
     // controlling methods
     slideTo(slideIndex) {
+      // console.log(1);
       if (this.isSliding || slideIndex === this.currentSlide) {
+        // console.log(2);
         return;
       }
 
@@ -181,16 +183,20 @@ export default {
       this.isSliding = true;
 
       window.setTimeout(() => {
+        // console.log(3);
         this.isSliding = false;
         this.currentSlide = normalizeSlideIndex(index, this.slidesCount);
       }, transition);
+      // console.log(4);
 
       this.$emit('slide', {
         currentSlide: this.currentSlide,
         slideFrom: previousSlide
       });
+      // console.log('----------------------');
     },
     slideNext() {
+      console.log('nextSlide click');
       this.slideTo(this.currentSlide + this.config.itemsToSlide);
     },
     slidePrev() {
@@ -219,6 +225,7 @@ export default {
       window.addEventListener('resize', this.update);
     },
     initAutoPlay() {
+      console.log('initAutoplay');
       this.timer = new Timer(() => {
         if (
           this.isSliding ||
@@ -355,7 +362,7 @@ export default {
       this.delta.y = 0;
       document.removeEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
       document.removeEventListener(this.isTouch ? 'touchend' : 'mouseup', this.onDragEnd);
-      this.restartTimer();
+      // this.restartTimer();
     },
     onTransitionend() {
       this.isSliding = false;
