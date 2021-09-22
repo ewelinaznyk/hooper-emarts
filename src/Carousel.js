@@ -182,6 +182,9 @@ export default {
       this.currentSlide = index;
       this.isSliding = true;
 
+      console.log('transition')
+      console.log(transition)
+
       window.setTimeout(() => {
         // console.log(3);
         this.isSliding = false;
@@ -198,6 +201,7 @@ export default {
     slideNext() {
       console.log('nextSlide click');
       this.slideTo(this.currentSlide + this.config.itemsToSlide);
+      this.restartTimer()
     },
     slidePrev() {
       this.slideTo(this.currentSlide - this.config.itemsToSlide);
