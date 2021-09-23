@@ -162,9 +162,7 @@ export default {
   methods: {
     // controlling methods
     slideTo(slideIndex) {
-      // console.log(1);
       if (this.isSliding || slideIndex === this.currentSlide) {
-        // console.log(2);
         return;
       }
 
@@ -182,28 +180,24 @@ export default {
       this.currentSlide = index;
       this.isSliding = true;
 
-      console.log('transition')
-      console.log(transition)
-
       window.setTimeout(() => {
-        // console.log(3);
         this.isSliding = false;
         this.currentSlide = normalizeSlideIndex(index, this.slidesCount);
       }, transition);
-      // console.log(4);
 
       this.$emit('slide', {
         currentSlide: this.currentSlide,
         slideFrom: previousSlide
       });
-      // console.log('----------------------');
     },
     slideNext() {
-      console.log('nextSlide click');
+      this.isFocus = false;
+      console.log('slideNext function');
+      console.log(this.isFocus);
       this.slideTo(this.currentSlide + this.config.itemsToSlide);
-      this.restartTimer()
     },
     slidePrev() {
+      this.isFocus = false;
       this.slideTo(this.currentSlide - this.config.itemsToSlide);
     },
 
@@ -229,7 +223,7 @@ export default {
       window.addEventListener('resize', this.update);
     },
     initAutoPlay() {
-      console.log('initAutoplay');
+      console.log('initAutoplay function');
       this.timer = new Timer(() => {
         if (
           this.isSliding ||
