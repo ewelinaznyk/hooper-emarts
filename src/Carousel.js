@@ -192,8 +192,6 @@ export default {
     },
     slideNext() {
       this.isFocus = false;
-      console.log('slideNext function');
-      console.log(this.isFocus);
       this.slideTo(this.currentSlide + this.config.itemsToSlide);
     },
     slidePrev() {
@@ -223,7 +221,6 @@ export default {
       window.addEventListener('resize', this.update);
     },
     initAutoPlay() {
-      console.log('initAutoplay function');
       this.timer = new Timer(() => {
         if (
           this.isSliding ||
@@ -360,7 +357,7 @@ export default {
       this.delta.y = 0;
       document.removeEventListener(this.isTouch ? 'touchmove' : 'mousemove', this.onDrag);
       document.removeEventListener(this.isTouch ? 'touchend' : 'mouseup', this.onDragEnd);
-      // this.restartTimer();
+      this.restartTimer();
     },
     onTransitionend() {
       this.isSliding = false;
