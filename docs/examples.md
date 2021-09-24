@@ -46,7 +46,6 @@
 
 </hooper>
 ```
-
 ## Navigation Component
 
 <hooper>
@@ -449,7 +448,7 @@ export default {
 }
 ```
 
-## Auto Playing
+<!-- ## Auto Playing
 
 <hooper :progress="true" :autoPlay="true" :playSpeed="2000">
   <slide>
@@ -470,9 +469,9 @@ export default {
   <slide>
     slide 6
   </slide>
-</hooper>
+</hooper> -->
 
-```vue
+<!-- ```vue
 <hooper :progress="true" :autoPlay="true" :playSpeed="2000">
   <slide>
     slide 1
@@ -493,7 +492,7 @@ export default {
     slide 6
   </slide>
 </hooper>
-```
+``` -->
 
 ## Custom Controllers
 
