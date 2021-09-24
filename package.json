@@ -1,6 +1,6 @@
 {
   "name": "hooper-emarts",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A customizable accessible carousel slider optimized for Vue",
   "module": "dist/hooper.esm.js",
   "unpkg": "dist/hooper.js",
