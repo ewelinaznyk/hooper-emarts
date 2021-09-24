@@ -191,9 +191,11 @@ export default {
       });
     },
     slideNext() {
+      this.isFocus = false;
       this.slideTo(this.currentSlide + this.config.itemsToSlide);
     },
     slidePrev() {
+      this.isFocus = false;
       this.slideTo(this.currentSlide - this.config.itemsToSlide);
     },
 
