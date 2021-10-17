@@ -132,17 +132,21 @@ export default {
         upper
       };
     },
-    trackTransform() {
-      const { infiniteScroll, centerMode } = this.config;
+    // trackTransform() {
+    //   const { infiniteScroll, centerMode } = this.config;
 
-      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
-      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
+    //   const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
+    //   const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
 
-      // calculate track translate
-      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
+    //   // calculate track translate
+    //   const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
-      return `transform: translate(${translate}px, 0);`;
-    },
+    //   const hooperTrack = document.getElementsByClassName('hooper-track')[0];
+
+    //   hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
+
+    //   // return `transform: translate(${translate}px, 0);`;
+    // },
     trackTransition() {
       if (this.initialized && this.isSliding) {
         return `transition: ${this.config.transition}ms`;
@@ -160,6 +164,22 @@ export default {
     }
   },
   methods: {
+    trackTransform() {
+      console.log('dzialam funkcja tracktransform');
+      const { infiniteScroll, centerMode } = this.config;
+
+      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
+      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
+
+      // calculate track translate
+      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
+
+      const hooperTrack = document.getElementsByClassName('hooper-track')[0];
+
+      hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
+
+      // return `transform: translate(${translate}px, 0);`;
+    },
     // controlling methods
     slideTo(slideIndex) {
       if (this.isSliding || slideIndex === this.currentSlide) {
@@ -402,6 +422,9 @@ export default {
     this.$nextTick(() => {
       this.update();
       this.slideTo(this.config.initialSlide || 0);
+      // console.log(document.getElementsByClassName('hooper-track')[0]);
+      this.trackTransform();
+      // this.trackTransition();
       setTimeout(() => {
         this.$emit('loaded');
         this.initialized = true;
@@ -416,6 +439,7 @@ export default {
     }
   },
   render(h) {
+    console.log('render');
     const body = renderBody.call(this, h);
 
     return h(
@@ -483,6 +507,7 @@ function renderBufferSlides(h, slides) {
  * So use with .call or .bind
  */
 function renderSlides(h) {
+  console.log('render slides');
   const children = normalizeChildren(this);
   const childrenCount = children.length;
   let idx = 0;
@@ -520,7 +545,7 @@ function renderSlides(h) {
         'hooper-track': true,
         'is-dragging': this.isDragging
       },
-      style: this.trackTransform + this.trackTransition,
+      // style: this.trackTransform + this.trackTransition,
       ref: 'track',
       on: {
         transitionend: this.onTransitionend
@@ -537,6 +562,7 @@ function renderSlides(h) {
  * use with .call or .bind
  */
 function renderBody(h) {
+  console.log('render body');
   const slides = renderSlides.call(this, h);
   const addons = this.$slots['hooper-addons'] || [];
   const a11y = h(
