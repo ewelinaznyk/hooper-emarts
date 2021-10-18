@@ -174,11 +174,11 @@ export default {
       // calculate track translate
       const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
-      const hooperTrack = document.getElementsByClassName('hooper-track')[0];
+      // const hooperTrack = document.getElementsByClassName('hooper-track')[0];
 
-      hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
+      // hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
 
-      // return `transform: translate(${translate}px, 0);`;
+      return `transform: translate(${translate}px, 0);`;
     },
     // controlling methods
     slideTo(slideIndex) {
@@ -419,17 +419,17 @@ export default {
   },
   mounted() {
     this.initEvents();
-    this.$nextTick(() => {
-      this.update();
-      this.slideTo(this.config.initialSlide || 0);
-      // console.log(document.getElementsByClassName('hooper-track')[0]);
-      this.trackTransform();
-      // this.trackTransition();
-      setTimeout(() => {
-        this.$emit('loaded');
-        this.initialized = true;
-      }, this.transition);
-    });
+    // this.$nextTick(() => {
+    this.update();
+    this.slideTo(this.config.initialSlide || 0);
+    // console.log(document.getElementsByClassName('hooper-track')[0]);
+    // this.trackTransform();
+    // this.trackTransition();
+    setTimeout(() => {
+      this.$emit('loaded');
+      this.initialized = true;
+    }, this.transition);
+    // });
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.update);
@@ -545,7 +545,7 @@ function renderSlides(h) {
         'hooper-track': true,
         'is-dragging': this.isDragging
       },
-      // style: this.trackTransform + this.trackTransition,
+      style: this.trackTransform + this.trackTransition,
       ref: 'track',
       on: {
         transitionend: this.onTransitionend

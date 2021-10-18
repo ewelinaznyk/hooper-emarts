@@ -16,7 +16,10 @@ export default {
   },
   computed: {
     style() {
+      console.log('style w pliku slide.js');
       const { slideWidth } = this.$hooper || {};
+
+      console.log(slideWidth);
 
       return `width: ${slideWidth}px`;
     },
