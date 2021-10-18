@@ -103,7 +103,7 @@ export default {
       isHover: false,
       isFocus: false,
       initialized: false,
-      slideWidth: 0,
+      slideWidth: 100,
       slideHeight: 0,
       slidesCount: 0,
       trimStart: 0,
@@ -165,7 +165,6 @@ export default {
   },
   methods: {
     trackTransform() {
-      console.log('dzialam funkcja tracktransform');
       const { infiniteScroll, centerMode } = this.config;
 
       const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
@@ -419,17 +418,15 @@ export default {
   },
   mounted() {
     this.initEvents();
-    // this.$nextTick(() => {
     this.update();
-    this.slideTo(this.config.initialSlide || 0);
-    // console.log(document.getElementsByClassName('hooper-track')[0]);
-    // this.trackTransform();
-    // this.trackTransition();
-    setTimeout(() => {
-      this.$emit('loaded');
-      this.initialized = true;
-    }, this.transition);
-    // });
+    this.$nextTick(() => {
+      // this.update();
+      this.slideTo(this.config.initialSlide || 0);
+      setTimeout(() => {
+        this.$emit('loaded');
+        this.initialized = true;
+      }, this.transition);
+    });
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.update);
@@ -439,7 +436,6 @@ export default {
     }
   },
   render(h) {
-    console.log('render');
     const body = renderBody.call(this, h);
 
     return h(
@@ -507,7 +503,6 @@ function renderBufferSlides(h, slides) {
  * So use with .call or .bind
  */
 function renderSlides(h) {
-  console.log('render slides');
   const children = normalizeChildren(this);
   const childrenCount = children.length;
   let idx = 0;
@@ -562,7 +557,6 @@ function renderSlides(h) {
  * use with .call or .bind
  */
 function renderBody(h) {
-  console.log('render body');
   const slides = renderSlides.call(this, h);
   const addons = this.$slots['hooper-addons'] || [];
   const a11y = h(
