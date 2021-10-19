@@ -16,12 +16,7 @@ export default {
   },
   computed: {
     style() {
-      console.log('style w pliku slide.js');
       const { slideWidth } = this.$hooper || {};
-
-      console.log(this.$hooper || {});
-
-      console.log(slideWidth);
 
       return `width: ${slideWidth}px`;
     },
@@ -47,7 +42,6 @@ export default {
     }
   },
   render(h) {
-    console.log('slides render');
     const classes = {
       'hooper-slide': true,
       'is-clone': this.isClone,

@@ -103,7 +103,7 @@ export default {
       isHover: false,
       isFocus: false,
       initialized: false,
-      slideWidth: 100,
+      slideWidth: 0,
       slideHeight: 0,
       slidesCount: 0,
       trimStart: 0,
@@ -132,21 +132,17 @@ export default {
         upper
       };
     },
-    // trackTransform() {
-    //   const { infiniteScroll, centerMode } = this.config;
+    trackTransform() {
+      const { infiniteScroll, centerMode } = this.config;
 
-    //   const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
-    //   const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
+      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
+      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
 
-    //   // calculate track translate
-    //   const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
+      // calculate track translate
+      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
 
-    //   const hooperTrack = document.getElementsByClassName('hooper-track')[0];
-
-    //   hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
-
-    //   // return `transform: translate(${translate}px, 0);`;
-    // },
+      return `transform: translate(${translate}px, 0);`;
+    },
     trackTransition() {
       if (this.initialized && this.isSliding) {
         return `transition: ${this.config.transition}ms`;
@@ -164,21 +160,6 @@ export default {
     }
   },
   methods: {
-    trackTransform() {
-      const { infiniteScroll, centerMode } = this.config;
-
-      const clonesSpace = infiniteScroll ? this.slideWidth * this.slidesCount : 0;
-      const centeringSpace = centerMode ? (this.containerWidth - this.slideWidth) / 2 : 0;
-
-      // calculate track translate
-      const translate = this.delta.x + (centeringSpace - clonesSpace - this.currentSlide * this.slideWidth);
-
-      // const hooperTrack = document.getElementsByClassName('hooper-track')[0];
-
-      // hooperTrack.getElementsByClassName.transform = `translate(${translate}px, 0);`;
-
-      return `transform: translate(${translate}px, 0);`;
-    },
     // controlling methods
     slideTo(slideIndex) {
       if (this.isSliding || slideIndex === this.currentSlide) {
@@ -418,9 +399,8 @@ export default {
   },
   mounted() {
     this.initEvents();
-    this.update();
     this.$nextTick(() => {
-      // this.update();
+      this.update();
       this.slideTo(this.config.initialSlide || 0);
       setTimeout(() => {
         this.$emit('loaded');
